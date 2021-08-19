@@ -30,12 +30,11 @@ echo The script started on $now
 
 gzip -d *fastq.gz
 
-echo The .gz files were unizipped by $now
+echo The .gz files were unizipped on $now
 
 for i in *.fastq;
 do
-  	echo working with "$i"
-	echo the time is $now 
+  	echo working with "$i" on $now 
         newfile="$(basename $i .fastq)"
 	   fastx_trimmer -f 2 -i $i | fastq_quality_trimmer -Q33 -v -t 20 -l 75 |fastx_clipper -Q33 -l 75 -a AGATCGGAAGAG -n -v > ${newfile}.trimmed.clipped.fastq
 done;
