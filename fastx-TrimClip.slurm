@@ -22,14 +22,20 @@ module load fastx/0.0.14
 # the first base is removed which is the poly-N tail (-f 2). Next, with fastq_quality_trimmer we scanned the files 
 # and removed bases less than Q20 (-t 20) and trims off bases less than 75 nts (-l 75), which is equal to half of the 150
 # nt sequence. Finally, Illumina Universal Adaptor (-a AGATCGGAAGAG) were removed as it was detected in the FastQC report.
+# FYI: increasing the number of nodes increases the speed in which the analysis proceeds.
+
+now=$(date)
+
+echo The script started on $now
 
 gzip -d *fastq.gz
 
-echo .gz files are unzipped
+echo The .gz files were unizipped by $now
 
 for i in *.fastq;
 do
   	echo working with "$i"
+	echo the time is $now 
         newfile="$(basename $i .fastq)"
 	   fastx_trimmer -f 2 -i $i | fastq_quality_trimmer -Q33 -v -t 20 -l 75 |fastx_clipper -Q33 -l 75 -a AGATCGGAAGAG -n -v > ${newfile}.trimmed.clipped.fastq
 done;
